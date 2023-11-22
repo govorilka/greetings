@@ -2,30 +2,30 @@ package main
 
 import (
 	"fmt"
-	"log"
+	"io"
+	"net/http"
 
 	"example.com/greetings"
 )
 
-func main() {
-	// Set properties of the predefined Logger, including
-	// the log entry prefix and a flag to disable printing
-	// the time, source file, and line number.
-	log.SetPrefix("greetings: ")
-	log.SetFlags(0)
-
-	// A slice of names.
-	names := []string{"Gladys", "Samantha", "Darrin"}
-
-	// Request greeting messages for the names.
-	messages, err := greetings.Hellos(names)
+func hello(w http.ResponseWriter, req *http.Request, values *greetings.Values) {
+	body, err := io.ReadAll(req.Body)
 	if err != nil {
-		log.Fatal(err)
+		http.Error(w, "Empty name", http.StatusBadRequest)
+		return
 	}
+	result, err := values.Get(string(body))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	fmt.Fprintf(w, result)
+}
 
-	// If no error was returned, print the returned map of
-	// messages to the console.
-	for _, value := range messages {
-		fmt.Println(value)
-	}
+func main() {
+	values := greetings.New()
+	http.HandleFunc("/hello", func(w http.ResponseWriter, req *http.Request) {
+		hello(w, req, values)
+	})
+	http.ListenAndServe(":8090", nil)
 }
