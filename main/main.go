@@ -5,10 +5,10 @@ import (
 	"io"
 	"net/http"
 
-	"example.com/greetings"
+	"example/dictionary"
 )
 
-func hello(w http.ResponseWriter, req *http.Request, values *greetings.Values) {
+func value(w http.ResponseWriter, req *http.Request, values *dictionary.Dictionary) {
 	body, err := io.ReadAll(req.Body)
 	if err != nil {
 		http.Error(w, "Empty name", http.StatusBadRequest)
@@ -23,9 +23,9 @@ func hello(w http.ResponseWriter, req *http.Request, values *greetings.Values) {
 }
 
 func main() {
-	values := greetings.New()
-	http.HandleFunc("/hello", func(w http.ResponseWriter, req *http.Request) {
-		hello(w, req, values)
+	values := dictionary.New()
+	http.HandleFunc("/value", func(w http.ResponseWriter, req *http.Request) {
+		value(w, req, values)
 	})
 	http.ListenAndServe(":8090", nil)
 }
