@@ -6,6 +6,10 @@
       {
         "name": "dictionary",
         "path": "../dictionary"
+      },
+      {
+        "name": "jsonrpc",
+        "path": "../jsonrpc"
       }
     ]
 }
