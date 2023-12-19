@@ -1,25 +1,28 @@
 package main
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 
 	"example/dictionary"
+	"example/jsonrpc"
 )
 
 func value(w http.ResponseWriter, req *http.Request, values *dictionary.Dictionary) {
+	id := jsonrpc.NewStringId("1")
+
 	body, err := io.ReadAll(req.Body)
 	if err != nil {
-		http.Error(w, "Empty name", http.StatusBadRequest)
+		jsonrpc.WriteError(w, id, jsonrpc.CodeInvalidParams, "Empty name")
 		return
 	}
+
 	result, err := values.Get(string(body))
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		jsonrpc.WriteError(w, id, jsonrpc.CodeInvalidRequest, err.Error())
 		return
 	}
-	fmt.Fprintf(w, result)
+	jsonrpc.WriteResult(w, id, result)
 }
 
 func main() {
