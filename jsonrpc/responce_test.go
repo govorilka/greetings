@@ -10,7 +10,7 @@ func TestResponceMethodNotFoundError(t *testing.T) {
 
 func TestResponceParseErrorError(t *testing.T) {
 	input := NewResponceByError(nil, NewError(CodeParseError))
-	want := "{\"jsonrpc\":\"2.0\",\"error\":{\"code\":-32700,\"message\":\"An error occurred on the server while parsing the JSON text.\"},\"id\":null}"
+	want := "{\"jsonrpc\":\"2.0\",\"error\":{\"code\":-32700,\"message\":\"Parse error\"},\"id\":null}"
 	checkMarshal(t, input, want)
 }
 

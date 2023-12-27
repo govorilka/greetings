@@ -6,13 +6,13 @@ import (
 
 func TestCodeParseError(t *testing.T) {
 	input := NewError(CodeParseError)
-	want := "{\"code\":-32700,\"message\":\"An error occurred on the server while parsing the JSON text.\"}"
+	want := "{\"code\":-32700,\"message\":\"Parse error\"}"
 	checkMarshal(t, input, want)
 }
 
 func TestCodeInvalidRequest(t *testing.T) {
 	input := NewError(CodeInvalidRequest)
-	want := "{\"code\":-32600,\"message\":\"The JSON sent is not a valid Request object.\"}"
+	want := "{\"code\":-32600,\"message\":\"Invalid request\"}"
 	checkMarshal(t, input, want)
 }
 

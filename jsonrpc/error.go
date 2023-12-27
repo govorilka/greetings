@@ -44,9 +44,9 @@ func NewUserError(code ErrorCode, message string) *Error {
 func (code ErrorCode) String() string {
 	switch code {
 	case CodeParseError:
-		return "An error occurred on the server while parsing the JSON text."
+		return "Parse error"
 	case CodeInvalidRequest:
-		return "The JSON sent is not a valid Request object."
+		return "Invalid request"
 	case CodeMethodNotFound:
 		return "The method does not exist / is not available."
 	case CodeInvalidParams:
@@ -55,4 +55,8 @@ func (code ErrorCode) String() string {
 		return "Internal JSON-RPC error."
 	}
 	return "Internal server error."
+}
+
+func (e *Error) Error() string {
+	return e.message
 }
